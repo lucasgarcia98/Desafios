@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style type="text/css">
+      * {
+        margin: 0;
+      }
+      body {
+        background-color: black;
+        color: rgb(172, 172, 172);
+        margin: 1rem;
+      }
+      .explain {
+        margin-bottom: 0.5rem;
+      }
+      td {
+        border: 1px solid white;
+        padding: 0.4rem;
+      }
+      .explain table thead {
+        color: rgb(202, 202, 202);
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      .explain p {
+        text-align: justify;
+        width: 600px;
+        margin: 1rem 0;
+      }
+      .content {
+        text-align: center;
+        border: 1px solid white;
+        padding: 0.5rem;
+        max-width: 450px;
+        width: 100%;
+      }
+      .content h4 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .content .order {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        text-align: start;
+        column-gap: 0.5rem;
+      }
+      .content .order div {
+        display: flex;
+        flex-direction: column;
+      }
+      .content .order #quantity {
+        width: 3rem;
+      }
+      .content .order .button {
+        justify-content: flex-end;
+      }
+      .content .order .button button {
+        padding: 0.2rem 0.4rem;
+        margin-left: 1rem;
+        background-color: black;
+        color: white;
+        border: 1px solid white;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+      .content .order .button button:hover {
+        background-color: white;
+        color: black;
+        border-color: black;
+      }
+      .content select {
+        height: 24px;
+        background-color: gray;
+        color: white;
+        border-radius: 3rem;
+        padding: 0px 0.5rem;
+      }
+      #purchase {
+        margin-top: 1rem;
+        border: 1px solid white;
+        max-width: 450px;
+        width: 100%;
+        text-align: center;
+        padding: 0.5rem;
+      }
+      #purchase h4 {
+        font-size: 1.4rem;
+      }
+      .orders-selected table {
+        width: 100%;
+      }
+      .amount {
+        display: flex;
+        justify-content: end;
+        margin-top: 0.5rem;
+      }
+
+      .empty {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="explain">
+      <h1>Uma lanchonete tem o seguinte cardápio:</h1>
+      <table>
+        <thead>
+          <tr>
+            <td>Especificação</td>
+            <td>Código</td>
+            <td>Preço</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Cachorro Quente</td>
+            <td>100</td>
+            <td>R$ 1,20</td>
+          </tr>
+          <tr>
+            <td>Bauru Simples</td>
+            <td>101</td>
+            <td>R$ 1,30</td>
+          </tr>
+          <tr>
+            <td>Bauru com ovo</td>
+            <td>102</td>
+            <td>R$ 1,50</td>
+          </tr>
+          <tr>
+            <td>Hambúrguer</td>
+            <td>103</td>
+            <td>R$ 1,20</td>
+          </tr>
+          <tr>
+            <td>Cheeseburguer</td>
+            <td>104</td>
+            <td>R$ 1,30</td>
+          </tr>
+          <tr>
+            <td>Refrigerante</td>
+            <td>105</td>
+            <td>R$ 1,00</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        Faça um programa que leia o código dos itens pedidos e as quantidade
+        desejadas. O cliente deve informar quando terminou de fazer o pedido.
+        Calcule e mostre o valor a ser pago por item e o total do pedido.
+      </p>
+    </div>
+
+    <div class="content">
+      <h4>Faça seu pedido</h4>
+      <div class="order">
+        <div class="select">
+          <label for="select-order">Pedido</label>
+          <select id="select-order">
+            <option value="0" selected disabled>Selecione o pedido</option>
+          </select>
+        </div>
+        <div class="quantity">
+          <label for="quantity">Quantidade</label>
+          <input type="number" min="1" id="quantity" value="1" />
+        </div>
+        <div class="button">
+          <button id="insert-order">Inserir</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="purchase" class="empty">
+      <h4>Pedidos selecionados</h4>
+      <div class="orders-selected">
+        <table>
+          <thead>
+            <tr>
+              <td>Produto</td>
+              <td>Quantidade</td>
+              <td>Valor do Pedido</td>
+            </tr>
+          </thead>
+          <tbody id="orders-selected__table"></tbody>
+        </table>
+        <div class="amount">
+          <p>Valor Total:</p>
+          <p id="total-amount"></p>
+        </div>
+      </div>
+    </div>
+
+    <script type="application/javascript">
+      let orders = [
+        {
+          codigo: '100',
+          especificacao: 'Cachorro Quente',
+          preco: 1.2,
+        },
+        {
+          codigo: '101',
+          especificacao: 'Bauru Simples',
+          preco: 1.3,
+        },
+        {
+          codigo: '102',
+          especificacao: 'Bauru com Ovo',
+          preco: 1.5,
+        },
+        {
+          codigo: '103',
+          especificacao: 'Hambúrguer',
+          preco: 1.2,
+        },
+        {
+          codigo: '104',
+          especificacao: 'Cheeseburguer',
+          preco: 1.3,
+        },
+        {
+          codigo: '105',
+          especificacao: 'Refrigerante',
+          preco: 1.0,
+        },
+      ];
+
+      let totalAmount = 0;
+
+      function convertNumberFormatBRL(price) {
+        return new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }).format(price);
+      }
+
+      orders.map((order) => {
+        let option = document.createElement('option');
+        option.value = order.codigo;
+        option.textContent = `${order.especificacao} - ${convertNumberFormatBRL(
+          order.preco
+        )}`;
+        document.getElementById('select-order').appendChild(option);
+      });
+
+      document
+        .getElementById('quantity')
+        .addEventListener('change', (quantity) => {
+          quantity.target.value =
+            quantity.target.value <= 0 ? 1 : quantity.target.value;
+        });
+      document.getElementById('insert-order').addEventListener('click', () => {
+        let selectOrder = document.getElementById('select-order');
+        let orderValue = selectOrder.options[selectOrder.selectedIndex].value;
+        if (orderValue != '0') {
+          let quantityProduct = document.getElementById('quantity').value;
+          let orderSelect = orders.find((order) => order.codigo === orderValue);
+
+          let trOrder = document.createElement('tr');
+
+          let tdProductOrder = document.createElement('td');
+          let tdQuantityOrder = document.createElement('td');
+          let tdPriceOrder = document.createElement('td');
+
+          let priceOrder = +quantityProduct * orderSelect.preco;
+
+          tdProductOrder.textContent = orderSelect.especificacao;
+          tdQuantityOrder.textContent = quantityProduct;
+          tdPriceOrder.textContent = convertNumberFormatBRL(priceOrder);
+
+          trOrder.appendChild(tdProductOrder);
+          trOrder.appendChild(tdQuantityOrder);
+          trOrder.appendChild(tdPriceOrder);
+
+          document
+            .getElementById('orders-selected__table')
+            .appendChild(trOrder);
+
+          totalAmount += priceOrder;
+          document.getElementById('total-amount').textContent =
+            convertNumberFormatBRL(totalAmount);
+
+          document.getElementById('purchase').classList.remove('empty');
+          document.getElementById('quantity').value = 1;
+          document.getElementById('select-order').selectedIndex = 0;
+        }
+      });
+    </script>
+  </body>
+</html>
